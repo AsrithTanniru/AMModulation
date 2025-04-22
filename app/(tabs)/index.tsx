@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { 
-  View, 
-  Text, 
-  ScrollView, 
-  Switch, 
-  StatusBar, 
-  TouchableOpacity, 
-  StyleSheet 
+import {
+  View,
+  Text,
+  ScrollView,
+  Switch,
+  StatusBar,
+  TouchableOpacity,
+  StyleSheet
 } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { LineChart } from 'react-native-chart-kit';
@@ -15,7 +15,6 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const screenWidth = Dimensions.get("window").width;
 
-// Color theme
 const COLORS = {
   primary: '#3498db',
   secondary: '#2980b9',
@@ -47,50 +46,71 @@ export default function SimulationTab() {
   const [showCarrier, setShowCarrier] = useState(true);
   const [showModulated, setShowModulated] = useState(true);
 
-  // Generate time domain array
   const t = Array.from({ length: 1000 }, (_, i) => i / 1000);
 
-  // Generate signal data
   const message = t.map(t => am * Math.cos(2 * Math.PI * fm * t));
   const carrier = t.map(t => ac * Math.cos(2 * Math.PI * 20 * t));
   const modulated = t.map(t => (ac + am * Math.cos(2 * Math.PI * fm * t)) * Math.cos(2 * Math.PI * 20 * t));
 
-  // Calculate modulation index
+  const upperEnvelope = t.map(t => ac + am * Math.cos(2 * Math.PI * fm * t));
+  const lowerEnvelope = t.map(t => -1 * (ac + am * Math.cos(2 * Math.PI * fm * t)));
+
   const modIndex = (am / ac).toFixed(2);
 
-  // Determine modulation type
   const modulationType = parseFloat(modIndex) > 1
     ? "Over-modulated"
     : modIndex === "1.00"
-    ? "Critically modulated"
-    : "Under-modulated";
+      ? "Critically modulated"
+      : "Under-modulated";
 
-  // Get modulation status color
   const getModulationColor = () => {
     if (parseFloat(modIndex) > 1) return COLORS.danger;
     if (modIndex === "1.00") return COLORS.warning;
     return COLORS.success;
   };
 
-  // Format data for charts
-  const formatData = (data:any) => ({
-    datasets: [{ 
-      data: data.slice(0, 100), 
+  const formatData = (data: any) => ({
+    datasets: [{
+      data: data.slice(0, 100),
       strokeWidth: 2,
-      color: (opacity = 1) => `rgba(52, 152, 219, ${opacity})` 
+      color: (opacity = 1) => `rgba(52, 152, 219, ${opacity})`
     }],
+    labels: []
+  });
+
+  const formatAMData = () => ({
+    datasets: [
+      {
+        data: modulated.slice(0, 100),
+        strokeWidth: 2,
+        color: (opacity = 1) => `rgba(52, 152, 219, ${opacity})`
+      },
+      {
+        data: upperEnvelope.slice(0, 100),
+        strokeWidth: 2,
+        color: (opacity = 1) => `rgba(231, 76, 60, ${opacity})`
+      },
+      {
+        data: lowerEnvelope.slice(0, 100),
+        strokeWidth: 2,
+        color: (opacity = 1) => `rgba(231, 76, 60, ${opacity})`
+      }
+    ],
     labels: []
   });
 
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor={COLORS.primary} barStyle="light-content" />
-      
-      {/* Header */}
+      <StatusBar
+        backgroundColor={COLORS.primary}
+        barStyle="light-content"
+
+      />
+
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Amplitude Modulation</Text>
       </View>
-      
+
       <ScrollView style={styles.scrollView}>
         <View style={styles.sliderContainer}>
           <Text style={styles.sliderLabel}>Message Frequency (fm): {fm} Hz</Text>
@@ -183,7 +203,7 @@ export default function SimulationTab() {
               </View>
               <LineChart
                 data={formatData(message)}
-                width={screenWidth - 40}
+                width={screenWidth - 60}
                 height={180}
                 chartConfig={chartConfig}
                 bezier
@@ -200,7 +220,7 @@ export default function SimulationTab() {
               </View>
               <LineChart
                 data={formatData(carrier)}
-                width={screenWidth - 40}
+                width={screenWidth - 60}
                 height={180}
                 chartConfig={chartConfig}
                 bezier
@@ -216,13 +236,27 @@ export default function SimulationTab() {
                 <Text style={styles.chartTitle}>AM Signal</Text>
               </View>
               <LineChart
-                data={formatData(modulated)}
-                width={screenWidth - 40}
+                data={formatAMData()}
+                width={screenWidth - 60}
                 height={180}
-                chartConfig={chartConfig}
+                chartConfig={{
+                  ...chartConfig,
+                  strokeWidth: 2,
+                  useShadowColorFromDataset: true,
+                }}
                 bezier
                 style={styles.chart}
               />
+              <View style={styles.legendContainer}>
+                <View style={styles.legendItem}>
+                  <View style={[styles.legendColor, { backgroundColor: COLORS.primary }]} />
+                  <Text style={styles.legendText}>AM Signal</Text>
+                </View>
+                <View style={styles.legendItem}>
+                  <View style={[styles.legendColor, { backgroundColor: COLORS.danger }]} />
+                  <Text style={styles.legendText}>Envelope</Text>
+                </View>
+              </View>
             </View>
           )}
         </View>
@@ -248,6 +282,8 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: 18,
     fontWeight: 'bold',
+    marginTop: 30,
+    fontFamily: 'Poppins_600SemiBold', 
   },
   scrollView: {
     flex: 1,
@@ -263,6 +299,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: COLORS.text,
     marginBottom: 8,
+    fontFamily: 'Poppins_400Regular',
   },
   slider: {
     height: 40,
@@ -282,12 +319,14 @@ const styles = StyleSheet.create({
   modulationLabel: {
     fontSize: 16,
     color: COLORS.text,
+    fontFamily: 'Poppins_500Medium', 
   },
   modulationValue: {
     fontSize: 16,
     fontWeight: 'bold',
     color: COLORS.primary,
     marginLeft: 4,
+    fontFamily: 'Poppins_500Medium',
   },
   modulationStatusBadge: {
     paddingHorizontal: 12,
@@ -298,6 +337,7 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontWeight: 'bold',
     fontSize: 14,
+    fontFamily: 'Poppins_500Medium', 
   },
   switchContainer: {
     flexDirection: 'row',
@@ -314,6 +354,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: COLORS.text,
     marginRight: 8,
+    fontFamily: 'Poppins_400Regular', // Poppins Regular
   },
   chartsContainer: {
     paddingHorizontal: 16,
@@ -336,9 +377,34 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: COLORS.text,
     marginLeft: 8,
+    fontFamily: 'Poppins_500Medium', // Poppins SemiBold
   },
   chart: {
     borderRadius: 8,
     marginTop: 4,
+  },
+  legendContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 12,
+    paddingTop: 8,
+    borderTopWidth: 1,
+    borderTopColor: COLORS.border,
+  },
+  legendItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 12,
+  },
+  legendColor: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    marginRight: 6,
+  },
+  legendText: {
+    fontSize: 12,
+    color: COLORS.text,
+    fontFamily: 'Poppins_400Regular',
   },
 });

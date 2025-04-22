@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-// Color theme
 const COLORS = {
   primary: '#3498db',
   secondary: '#2980b9',
@@ -28,7 +27,7 @@ export default function ExploreTab() {
     <View style={styles.container}>
       <StatusBar backgroundColor={COLORS.primary} barStyle="light-content" />
       
-      {/* Header */}
+
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Learn About AM</Text>
       </View>
@@ -224,11 +223,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     elevation: 4,
+    fontFamily: 'Poppins_500Medium',
   },
   headerTitle: {
     color: COLORS.white,
     fontSize: 18,
     fontWeight: 'bold',
+    fontFamily: 'Poppins_600Bold',
+
   },
   scrollView: {
     flex: 1,
@@ -241,6 +243,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: COLORS.text,
     marginBottom: 16,
+    fontFamily: 'Poppins_500Medium',
+
   },
   exploreCard: {
     backgroundColor: COLORS.white,
@@ -248,23 +252,31 @@ const styles = StyleSheet.create({
     padding: 16,
     marginBottom: 16,
     elevation: 2,
+    fontFamily: 'Poppins_500Medium',
+
   },
   cardHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 12,
+    fontFamily: 'Poppins_500Medium',
+
   },
   cardTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     color: COLORS.text,
     marginLeft: 8,
+    fontFamily: 'Poppins_500Medium',
+
   },
   cardText: {
     fontSize: 14,
     color: COLORS.text,
     lineHeight: 22,
     marginBottom: 8,
+    fontFamily: 'Poppins_500Medium',
+
   },
   formula: {
     fontSize: 16,
@@ -275,9 +287,13 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.background,
     borderRadius: 4,
     marginVertical: 8,
+    fontFamily: 'Poppins_500Medium',
+
   },
   typeContainer: {
     marginBottom: 16,
+    fontFamily: 'Poppins_500Medium',
+
   },
   typeBadge: {
     paddingHorizontal: 12,
@@ -285,21 +301,29 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     alignSelf: 'flex-start',
     marginBottom: 8,
+    fontFamily: 'Poppins_500Medium',
+
   },
   typeText: {
     color: COLORS.white,
     fontWeight: 'bold',
     fontSize: 14,
+    fontFamily: 'Poppins_500Medium',
+
   },
   typeDescription: {
     fontSize: 14,
     color: COLORS.text,
     lineHeight: 20,
+    fontFamily: 'Poppins_500Medium',
+
   },
   applicationItem: {
     flexDirection: 'row',
     marginBottom: 12,
     alignItems: 'flex-start',
+        fontFamily: 'Poppins_500Medium',
+
   },
   applicationText: {
     fontSize: 14,
@@ -307,10 +331,14 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     flex: 1,
     marginLeft: 8,
+    fontFamily: 'Poppins_500Medium',
+
   },
   applicationTitle: {
     fontWeight: 'bold',
     color: COLORS.text,
+    fontFamily: 'Poppins_500Medium',
+
   },
   compareTable: {
     borderWidth: 1,
@@ -325,6 +353,8 @@ const styles = StyleSheet.create({
   compareHeaderText: {
     color: COLORS.white,
     fontWeight: 'bold',
+    fontFamily: 'Poppins_500Medium',
+
   },
   compareRow: {
     flexDirection: 'row',
