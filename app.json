@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "AMModulation",
-    "slug": "AMModulation",
+    "name": "Synapse",
+    "slug": "Synapse",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/Synapse.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -15,7 +15,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.asrith.Synapse"
     },
     "web": {
       "bundler": "metro",
@@ -27,15 +28,25 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/images/Synapse.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
-      ]
+      ],
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "c7dc6374-57bf-4bd6-809f-82486417bb39"
+      }
+    },
+    "owner": "yuva_tanniru"
   }
 }
